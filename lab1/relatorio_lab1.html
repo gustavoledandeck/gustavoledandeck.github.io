@@ -12,8 +12,32 @@
     <h1> 1b - Altere: modifique o programa para que as imagens sejam exibidas mais rápidamente e depois para que sejam exibidas mais lentamente. Responda: qual a explicação de alteração de
 velocidade de exibição, e apresente suas soluções detalhadamente.</h1>
       <h1>Resposta: Ao dobrar o valor no denominador, temos o dobro da velocidade em framerate, aumentando o fps, devido a propriedade da convolução do escalamento do eixo. Da mesma forma, ao diminuir o denominador, o tempo entre os frames, isto é, o fps diminui</h1>
-    <audio controls>
-        <source src="Audio_teste.mp3" type="audio/mp3">
+    <h1>Código Python Modificado (Quando adicionado um valor maior no denominador, aumenta a velocidade do vídeo, quando diminui, afeta deixando mais lento</h1>
+    <pre><code>
+		import time
+		import numpy as np
+		import cv2 as cv
+		
+		cap = cv.VideoCapture('big_buck_bunny.mp4')
+		
+		while(cap.isOpened()):
+		    ret, frame = cap.read()
+		    
+		    if ret==True:
+		        # show the frame
+		        cv.imshow('frame', frame)
+		
+		        # wait next frame by 40ms - 25fps
+		        time.sleep(1/50.0)   # Em 50 o tempo caiu pela metade, deixando o vídeo em algo parecido com 2x.
+		        
+		        if cv.waitKey(1) & 0xFF == ord('q'):
+		            break
+		    else:
+		        break
+		               
+		cap.release()
+		cv.destroyAllWindows()
+    </code></pre>
     </audio>
     <h2>Fotos e Imagens</h2>
     <video width="320" height="240" controls>
