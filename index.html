@@ -1,27 +1,514 @@
-to<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-<title>TESTE CV 2025.2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Codificação de Sinais Multimídia - ESFI001</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 4px;
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .figure {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .figure-caption {
+            font-style: italic;
+            margin-top: 5px;
+            color: #7f8c8d;
+        }
+        .conclusion {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+        .reference {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .audio-controls {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .highlight {
+            background-color: #fff9c4;
+            transition: background-color 0.3s;
+        }
+        .voice-select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Eu tenho Visão Computacional como um dos caminhos a seguir no futuro no universo de soft computing</h1>
-    <h1> Minha Foto de Perfil</h1>
-    <img src="fotoperfil.jpg" alt="Foto de Perfil">
+    <header>
+        <h1>Relatório de Codificação de Sinais Multimídia - ESFI001</h1>
+        <p>Lab1 - Quantização, Taxa de Amostragem e Características Básicas de Imagens</p>
+    </header>
 
-    <h1> Áudio de Teste</h1>
-    <audio controls>
-        <source src="Audio_teste.mp3" type="audio/mp3">
-    </audio>
-    <h2>Fotos e Imagens</h2>
-    <video width="320" height="240" controls>
-        <source src="video_teste_cv_2025_2.mp4" type="video/mp4">
-    </video>
-    <h3>Preferencias</h3>
+    <div class="audio-controls">
+        <button id="playBtn">▶ Reproduzir Relatório</button>
+        <button id="pauseBtn" disabled>⏸ Pausar</button>
+        <button id="resumeBtn" disabled>▶ Continuar</button>
+        <button id="stopBtn" disabled>⏹ Parar</button>
+        <label for="voiceSelect">Voz:</label>
+        <select id="voiceSelect" class="voice-select"></select>
+        <label for="rateSelect">Velocidade:</label>
+        <select id="rateSelect" class="voice-select">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+        </select>
+        <label for="pitchSelect">Tom:</label>
+        <select id="pitchSelect" class="voice-select">
+            <option value="0.5">Muito baixo</option>
+            <option value="0.75">Baixo</option>
+            <option value="1" selected>Normal</option>
+            <option value="1.25">Alto</option>
+            <option value="1.5">Muito alto</option>
+        </select>
+    </div>
 
-    <p>Minha vida Processamento Visual e Imagens</p>
+    <main>
+        <section id="introducao">
+            <h2>Introdução</h2>
+            <p>Este relatório descreve os experimentos realizados na disciplina de Codificação de Sinais Multimídia (ESFI001), com foco nos conceitos de quantização, taxa de amostragem e características básicas de sinais de áudio e imagens digitais.</p>
+            <p>O objetivo principal foi compreender como os sinais de áudio são digitalizados, processados e analisados, explorando os efeitos da variação de parâmetros como taxa de amostragem e ganho na qualidade do sinal resultante.</p>
+        </section>
 
-    <a href="../lab1/relatorio_lab1.html">Acessar Conteúdo do Lab1</a>
+        <section id="objetivos">
+            <h2>Objetivos</h2>
+            <p>Os objetivos específicos deste experimento foram:</p>
+            <ul>
+                <li>Gravar um sinal audível em taxas variadas</li>
+                <li>Calcular a estimativa do erro de quantização de um sinal</li>
+                <li>Carregar e manipular imagens básicas</li>
+                <li>Analisar a representação de pixels e a profundidade de cor</li>
+            </ul>
+        </section>
 
+        <section id="metodologia">
+            <h2>Metodologia</h2>
+            <h3>Gravação de Áudio</h3>
+            <p>Para a gravação de áudio, foi utilizado o software Audacity com as seguintes configurações:</p>
+            <ul>
+                <li>Formato: 32-bit float</li>
+                <li>Taxa de amostragem: 44100 Hz</li>
+                <li>Duração: aproximadamente 3 segundos</li>
+                <li>Sinal: tom senoidal de 440 Hz (Lá)</li>
+            </ul>
+            <p>Foram realizadas gravações com diferentes configurações de ganho (0 dB e +10 dB) para análise comparativa.</p>
 
+            <h3>Processamento de Áudio</h3>
+            <p>Para o processamento de áudio, utilizou-se Python com as bibliotecas:</p>
+            <ul>
+                <li>scipy.io.wavfile</li>
+                <li>NumPy</li>
+                <li>Matplotlib</li>
+            </ul>
+            <p>As operações realizadas incluíram carregamento de arquivos WAV, análise de sinais e visualização de formas de onda.</p>
+        </section>
+
+        <section id="resultados">
+            <h2>Resultados e Análise</h2>
+            <h3>Configuração do Ambiente</h3>
+            <p>Para iniciar o experimento, foi necessário configurar o ambiente e importar as bibliotecas necessárias:</p>
+            
+            <div class="code-block">
+                <pre># Importação das bibliotecas
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.io.wavfile import read
+				</pre>
+            </div>
+
+            <h3>Montagem do Google Drive</h3>
+            <p>Para acessar os arquivos de áudio gravados, foi necessário montar o Google Drive:</p>
+            
+            <div class="code-block">
+                <pre># Montagem do Google Drive
+from google.colab import drive
+drive.mount('/content/drive/')
+				</pre>
+            </div>
+
+            <div class="code-block">
+                <pre># Verificação dos arquivos no diretório
+!ls -l "/content/drive/MyDrive/Colab Notebooks"</pre>
+            </div>
+	
+            <h3>Leitura do Arquivo de Áudio</h3>
+            <p>	O arquivo de áudio foi lido e suas características básicas foram analisadas:</p>
+            
+            <div class="code-block">
+                <pre># Especifique o caminho para o arquivo .wav
+#caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_44k.wav'
+caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_10_44k.wav'
+
+# Use a função read para ler o arquivo
+taxa_amostragem_lida, dados_audio_lidos = read(caminho_arquivo_wav)
+
+# Exiba as informações básicas
+print(f"Taxa de amostragem: {taxa_amostragem_lida} Hz")
+print(f"Formato dos dados de áudio: {dados_audio_lidos.dtype}")
+print(f"Número de quadros (frames): {len(dados_audio_lidos)}")
+print(f"Número de canais: {dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1}")
+
+# Exiba os primeiros 10 quadros de dados de áudio
+print("\nPrimeiros 10 quadros de dados de áudio:")
+print(dados_audio_lidos[:10])</pre>
+            </div>
+
+            <h3>Visualização do Sinal Gravado</h3>
+            <p>O sinal de áudio gravado foi visualizado através de um gráfico da forma de onda:</p>
+            
+            <div class="code-block">
+                <pre># Obter o número de canais e o número de quadros (frames)
+num_canais = dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1
+num_quadros = dados_audio_lidos.shape[0]
+
+# Criar um eixo de tempo em segundos
+tempo = np.linspace(0., num_quadros / taxa_amostragem_lida, num_quadros)
+
+# Plotar os dados de áudio - apenas o canal 1 (índice 0)
+plt.figure(figsize=(12, 6))
+plt.plot(tempo[0:220], dados_audio_lidos[0:220, 0],'o') # Seleciona apenas o primeiro canal
+# o valor 220 é devido à taxa de amostragem 44100 e a frequência de 440 Hz, para mostrar dois Períodos
+
+plt.xlabel("Tempo (s)")
+plt.ylabel("Amplitude")
+plt.title("Forma de onda do áudio - Canal 1")
+plt.grid(True)
+plt.show()		</pre>
+            </div>
+
+            <div class="figure">
+                <img src="https://drive.google.com/uc?export=view&id=1LpqOqhAlgn0-DMZEhlWArKS3K_rTA4Uu" alt="Forma de onda do tom de 440 Hz">
+                <div class="figure-caption">Figura 1: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz</div>
+            </div>
+
+            <h3>Análise do Erro de Quantização</h3>
+            <p>O erro de quantização foi analisado comparando as gravações com diferentes ganhos (0 dB e +10 dB). Para o sinal gravado com ganho de 0 dB, o erro foi menor, enquanto para o sinal com ganho de +10 dB, observou-se maior erro devido à saturação em alguns pontos.</p>
+
+            <h3>Alteração da Taxa de Amostragem</h3>
+            <p>O experimento também incluiu a gravação do mesmo tom senoidal com uma taxa de amostragem reduzida para 8 kHz, simulando a banda de telefonia fixa:</p>
+            
+            <div class="code-block">
+                <pre># Leitura do arquivo de áudio com taxa de 8 kHz
+caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_8k.wav'
+
+taxa_amostragem_lida, dados_audio_lidos = read(caminho_arquivo_wav)
+
+# Obter o número de canais e o número de quadros (frames)
+num_canais = dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1
+num_quadros = dados_audio_lidos.shape[0]
+
+# Criar um eixo de tempo em segundos
+tempo = np.linspace(0., num_quadros / taxa_amostragem_lida, num_quadros)
+
+# Plotar os dados de áudio - apenas o canal 1 (índice 0)
+plt.figure(figsize=(12, 6))
+plt.plot(tempo[300:337], dados_audio_lidos[300:337, 0],'o') # Seleciona apenas o primeiro canal
+# --------------> ATENÇÃO!!!
+# o offset inicial de 300 é para estabilizar a amplitude da gravação
+# o intervalo de 37 amostras é devido à taxa de amostragem 8k e a frequência de 440 Hz, para mostrar dois Períodos
+
+plt.xlabel("Tempo (s)")
+plt.ylabel("Amplitude")
+plt.title("Forma de onda do áudio - Canal 1")
+plt.grid(True)
+plt.show()</pre>
+            </div>
+
+            <p>A redução da taxa de amostragem para 8 kHz resultou em uma representação menos precisa da forma de onda senoidal, evidenciando os efeitos do aliasing e da quantização.</p>
+        </section>
+
+        <section id="conclusao">
+            <h2>Conclusão</h2>
+            <div class="conclusion">
+                <p>Os experimentos realizados permitiram compreender os fundamentos da digitalização de sinais de áudio. Foi possível observar:</p>
+                <ul>
+                    <li>A importância da taxa de amostragem adequada para evitar aliasing</li>
+                    <li>O efeito da quantização na qualidade do sinal</li>
+                    <li>As diferenças entre sinais gravados com diferentes ganhos</li>
+                    <li>A representação visual de sinais senoidais em diferentes taxas de amostragem</li>
+                </ul>
+                <p>Os resultados obtidos estão de acordo com a teoria de processamento digital de sinais, demonstrando a relação entre os parâmetros de digitalização e a qualidade final do sinal. A comparação entre as gravações com ganhos diferentes evidenciou como o ajuste inadequado do ganho pode levar à saturação do sinal e aumento do erro de quantização.</p>
+            </div>
+        </section>
+
+        <section id="referencias">
+            <h2>Referências</h2>
+            <div class="reference">
+                <p>OPPENHEIM, A. V.; SCHAFER, R. W. <em>Processamento de Sinais Discretos</em>. 3. ed. Pearson, 2010.</p>
+                <p>Documentação do Audacity. Disponível em: https://www.audacityteam.org/</p>
+                <p>Documentação do Google Colab. Disponível em: https://colab.research.google.com/</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Relatório de Codificação de Sinais Multimídia - ESFI001 - 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos da interface
+            const playBtn = document.getElementById('playBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resumeBtn = document.getElementById('resumeBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const voiceSelect = document.getElementById('voiceSelect');
+            const rateSelect = document.getElementById('rateSelect');
+            const pitchSelect = document.getElementById('pitchSelect');
+            
+            // Objeto para síntese de voz
+            const synth = window.speechSynthesis;
+            let utterance = null;
+            let currentSection = null;
+            let voices = [];
+            
+            // Carregar vozes disponíveis
+            function loadVoices() {
+                voices = synth.getVoices();
+                voiceSelect.innerHTML = '';
+                
+                // Filtrar vozes em português
+                const portugueseVoices = voices.filter(voice => 
+                    voice.lang.startsWith('pt') || voice.lang.includes('BR')
+                );
+                
+                if (portugueseVoices.length > 0) {
+                    portugueseVoices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        voiceSelect.appendChild(option);
+                    });
+                } else {
+                    // Se não houver vozes em português, usar todas as disponíveis
+                    voices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        voiceSelect.appendChild(option);
+                    });
+                }
+            }
+            
+            // Carregar vozes quando estiverem disponíveis
+            if (synth.onvoiceschanged !== undefined) {
+                synth.onvoiceschanged = loadVoices;
+            }
+            
+            // Carregar vozes imediatamente se já estiverem disponíveis
+            loadVoices();
+            
+            // Função para ler um elemento específico
+            function readElement(element) {
+                if (utterance) {
+                    synth.cancel();
+                }
+                
+                const text = element.innerText || element.textContent;
+                utterance = new SpeechSynthesisUtterance(text);
+                
+                // Configurar voz selecionada
+                const selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Configurar velocidade e tom
+                utterance.rate = parseFloat(rateSelect.value);
+                utterance.pitch = parseFloat(pitchSelect.value);
+                
+                // Destacar elemento durante a leitura
+                if (currentSection) {
+                    currentSection.classList.remove('highlight');
+                }
+                currentSection = element;
+                element.classList.add('highlight');
+                
+                // Configurar eventos
+                utterance.onend = function() {
+                    element.classList.remove('highlight');
+                    updateButtons(false);
+                };
+                
+                utterance.onerror = function() {
+                    element.classList.remove('highlight');
+                    updateButtons(false);
+                    alert('Erro na síntese de voz. Verifique se há vozes disponíveis.');
+                };
+                
+                // Iniciar leitura
+                synth.speak(utterance);
+                updateButtons(true);
+            }
+            
+            // Função para ler todo o relatório
+            function readReport() {
+                const sections = document.querySelectorAll('section');
+                let currentIndex = 0;
+                
+                function readNextSection() {
+                    if (currentIndex < sections.length) {
+                        readElement(sections[currentIndex]);
+                        utterance.onend = function() {
+                            currentIndex++;
+                            readNextSection();
+                        };
+                    } else {
+                        updateButtons(false);
+                    }
+                }
+                
+                readNextSection();
+            }
+            
+            // Atualizar estado dos botões
+            function updateButtons(playing) {
+                playBtn.disabled = playing;
+                pauseBtn.disabled = !playing;
+                resumeBtn.disabled = !playing || !synth.paused;
+                stopBtn.disabled = !playing;
+            }
+            
+            // Event listeners para os botões
+            playBtn.addEventListener('click', function() {
+                readReport();
+            });
+            
+            pauseBtn.addEventListener('click', function() {
+                synth.pause();
+                updateButtons(true);
+            });
+            
+            resumeBtn.addEventListener('click', function() {
+                synth.resume();
+                updateButtons(true);
+            });
+            
+            stopBtn.addEventListener('click', function() {
+                synth.cancel();
+                if (currentSection) {
+                    currentSection.classList.remove('highlight');
+                }
+                updateButtons(false);
+            });
+            
+            // Event listeners para alterações de voz, velocidade e tom
+            voiceSelect.addEventListener('change', function() {
+                if (utterance && synth.speaking) {
+                    synth.cancel();
+                    readElement(currentSection);
+                }
+            });
+            
+            rateSelect.addEventListener('change', function() {
+                if (utterance) {
+                    utterance.rate = parseFloat(rateSelect.value);
+                }
+            });
+            
+            pitchSelect.addEventListener('change', function() {
+                if (utterance) {
+                    utterance.pitch = parseFloat(pitchSelect.value);
+                }
+            });
+            
+            // Permitir que o usuário clique em seções específicas para ouvir
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.addEventListener('click', function() {
+                    readElement(this);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
