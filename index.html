@@ -148,6 +148,25 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        .audio-player {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .audio-player audio {
+            flex: 1;
+            min-width: 200px;
+        }
+        .audio-player .audio-info {
+            font-size: 0.9em;
+            color: #6c757d;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -185,7 +204,7 @@
         <section id="introducao">
             <h2>Introdução</h2>
             <p>Este relatório descreve os experimentos realizados na disciplina de Codificação de Sinais Multimídia (ESFI001), especificamente o Laboratório 1, que aborda os fundamentos da quantização, taxa de amostragem e características básicas de imagens digitais.</p>
-            <p>O laboratório foi estruturado em duas partes principais: análise de sinais de áudio gravados em diferentes condições e análise de imagens digitais. Os experimentos foram realizados utilizando o software Audacity para gravação de áudio e Google Colab com Python para processamento e análise dos dados.</p>
+            <p>O laboratório foi estruturado em duas partes principais: análise de sinais de áudio gravados em diferentes condições e análise de imagens digitais. Os experimentos foram realizados utilizando o software Audacity para gravação de áudio, Frequency Generator Hz para gerar o áudio, e Google Colab com Python para processamento e análise dos dados.</p>
         </section>
 
         <section id="objetivos">
@@ -203,7 +222,7 @@
             <h2>Metodologia</h2>
             
             <h3>Parte A: Gravação e Análise de Áudio</h3>
-            <p>Para a análise de sinais de áudio, foi seguido o seguinte protocolo experimental:</p>
+            <p>Para a análise de sinais de áudio, os seguintes passos foram realizados:</p>
             
             <h4>Configuração do Ambiente</h4>
             <p>O experimento utilizou o Google Colab com as seguintes bibliotecas Python:</p>
@@ -218,23 +237,25 @@ from scipy.io.wavfile import read</pre>
             <p>As gravações foram realizadas seguindo estas especificações:</p>
             <ul>
                 <li><strong>Software:</strong> Audacity</li>
-                <li><strong>Formato:</strong> 32-bit float</li>
-                <li><strong>Taxa de amostragem primária:</strong> 44100 Hz</li>
-                <li><strong>Taxa de amostragem secundária:</strong> 8000 Hz (banda de telefonia)</li>
+                <li><strong>Formato primeira etapa:</strong> 32-bit float</li>
+				<li><strong>Formato segunda etapa:</strong> 16-bit PCM</li>
+                <li><strong>Taxa de amostragem primeira etapa:</strong> 44100 Hz</li>
+                <li><strong>Taxa de amostragem segunda etapa:</strong> 8000 Hz</li>
                 <li><strong>Sinal de teste:</strong> Tom senoidal de 440 Hz (nota Lá) e 1000 Hz</li>
                 <li><strong>Configurações de ganho:</strong> 0 dB e +10 dB</li>
                 <li><strong>Duração:</strong> Aproximadamente 3 segundos</li>
             </ul>
 
             <h4>Geração do Sinal</h4>
-            <p>O sinal senoidal foi gerado utilizando o aplicativo móvel "Frequency Generator", permitindo controle preciso da frequência. O microfone do headset foi posicionado próximo ao alto-falante do dispositivo móvel para capturar o sinal.</p>
+            <p>O sinal senoidal foi gerado utilizando o aplicativo móvel "Frequency Generator", permitindo controle da frequência. O microfone do headset foi posicionado próximo ao alto-falante do dispositivo móvel para capturar o sinal.</p>
 
             <h3>Parte B: Análise de Imagens</h3>
-            <p>Para a análise de imagens digitais, foram utilizadas três imagens diferentes:</p>
+            <p>Para a análise de imagens digitais, foram utilizadas imagens de diferentes tipos e formatos:</p>
             <ul>
-                <li><strong>peppers.jpg:</strong> Imagem colorida padrão para testes</li>
-                <li><strong>messi5.jpg:</strong> Fotografia esportiva</li>
-                <li><strong>cameraman.jpg:</strong> Imagem em tons de cinza clássica</li>
+                <li><strong>peppers.png:</strong> Imagem colorida padrão para testes</li>
+                <li><strong>messi5.png:</strong> Fotografia esportiva</li>
+                <li><strong>cameraman.png:</strong> Imagem em tons de cinza clássica</li>
+                <li><strong>Imagens adicionais:</strong> Formatos BMP e PPM para análise comparativa</li>
             </ul>
         </section>
 
@@ -244,7 +265,7 @@ from scipy.io.wavfile import read</pre>
             <h3>Análise de Sinais de Áudio</h3>
             
             <h4>Carregamento e Visualização dos Dados</h4>
-            <p>Os arquivos de áudio foram carregados e analisados utilizando o seguinte código:</p>
+            <p>Os arquivos de áudio foram carregados e analisados utilizando o seguinte código, apenas alterando a variável caminho_arquivo_wav a cada som utilizado:</p>
             <div class="code-block">
                 <pre># Especificar o caminho para o arquivo .wav
 caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_44k.wav'
@@ -261,8 +282,16 @@ print(f"Número de canais: {dados_audio_lidos.shape[1] if dados_audio_lidos.ndim
 
             <h4>Visualização do Sinal de 440 Hz a 44.1 kHz</h4>
             <div class="figure">
-                <img src="tom440_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44k" style="max-width: 600px;">
+                <img src="tom440_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44.1 kHz" style="max-width: 600px;">
                 <div class="figure-caption">Figura 1: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz (ganho 0 dB)</div>
+            </div>
+
+            <div class="audio-player">
+                <audio controls>
+                    <source src="tom440_44k.wav" type="audio/wav">
+                    Seu navegador não suporta o elemento audio.
+                </audio>
+                <div class="audio-info">Tom 440 Hz<br>44.1 kHz, 32-bit float, 0 dB</div>
             </div>
 
             <div class="code-block">
@@ -282,8 +311,16 @@ plt.show()</pre>
             <p>A gravação com ganho de +10 dB apresentou as seguintes características:</p>
 
             <div class="figure">
-                <img src="tom440_10_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44k ganho 10 dB" style="max-width: 600px;">
+                <img src="tom440_10_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44.1 kHz ganho 10 dB" style="max-width: 600px;">
                 <div class="figure-caption">Figura 2: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz (ganho +10 dB)</div>
+            </div>
+
+            <div class="audio-player">
+                <audio controls>
+                    <source src="tom440_10_44k.wav" type="audio/wav">
+                    Seu navegador não suporta o elemento audio.
+                </audio>
+                <div class="audio-info">Tom 440 Hz<br>44.1 kHz, 32-bit float, +10 dB</div>
             </div>
 
             <h5>Comparação entre Ganhos de 0 dB e +10 dB:</h5>
@@ -316,13 +353,29 @@ plt.show()</pre>
 
             <div class="image-comparison">
                 <div class="image-item">
-                    <img src="tom440_8k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 8k" style="max-width: 400px;">
+                    <img src="tom440_8k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 8 kHz" style="max-width: 400px;">
                     <div class="figure-caption">Figura 3: Tom de 440 Hz a 8 kHz</div>
                 </div>
                 <div class="image-item">
-                    <img src="tom1k_8k.jpg" alt="Forma de onda do tom de 1k Hz sample rate 8k" style="max-width: 400px;">
+                    <img src="tom1k_8k.jpg" alt="Forma de onda do tom de 1k Hz sample rate 8 kHz" style="max-width: 400px;">
                     <div class="figure-caption">Figura 4: Tom de 1000 Hz a 8 kHz</div>
                 </div>
+            </div>
+
+            <div class="audio-player">
+                <audio controls>
+                    <source src="tom440_8k.wav" type="audio/wav">
+                    Seu navegador não suporta o elemento audio.
+                </audio>
+                <div class="audio-info">Tom 440 Hz<br>8 kHz, 16-bit PCM</div>
+            </div>
+
+            <div class="audio-player">
+                <audio controls>
+                    <source src="tom1k_8k.wav" type="audio/wav">
+                    Seu navegador não suporta o elemento audio.
+                </audio>
+                <div class="audio-info">Tom 1000 Hz<br>8 kHz, 16-bit PCM</div>
             </div>
 
             <div class="code-block">
@@ -369,19 +422,12 @@ plt.show()</pre>
                     <td>1000 Hz</td>
                     <td>8 kHz</td>
                     <td>8 amostras</td>
-                    <td>Marginal (limite do teorema de Nyquist)</td>
+                    <td>Marginal (limite mínimo)</td>
                 </tr>
             </table>
 
             <h4>Estimativa do Erro de Quantização</h4>
-            <p><strong>Análise Teórica do Erro de Quantização:</strong> Para os sinais gravados a 8 kHz com formato 16-bit PCM:</p>
-            <ul>
-                <li><strong>Resolução de quantização:</strong> 1 / 2^16 = 1/65536 ≈ 15.26 µV por LSB</li>
-                <li><strong>Erro RMS teórico:</strong> q/√12, onde q é o passo de quantização</li>
-                <li><strong>SNR teórico:</strong> 6.02n + 1.76 dB = 6.02×16 + 1.76 = 98.08 dB</li>
-            </ul>
-            <p><strong>Para o tom de 440 Hz:</strong> O erro de quantização é menor devido à maior amplitude relativa do sinal.</p>
-            <p><strong>Para o tom de 1000 Hz:</strong> O erro pode ser mais perceptível devido ao menor número de amostras por período.</p>
+            <p><strong>Análise do Erro de Quantização:</strong> Para os sinais gravados a 8 kHz com formato 16-bit PCM observou-se que o erro de quantização é inversamente proporcional ao número de bits utilizados. Com 16 bits, obtemos 65536 níveis de quantização, resultando em uma resolução adequada para os sinais testados. Para o tom de 440 Hz, o erro de quantização foi menor devido à maior amplitude relativa do sinal, enquanto para o tom de 1000 Hz, o erro pode ser mais perceptível devido ao menor número de amostras por período.</p>
 
             <h3>Análise de Imagens Digitais</h3>
 
@@ -420,7 +466,7 @@ plt.show()</pre>
         print("Pixel central:", img[img.shape[0]//2, img.shape[1]//2])</pre>
             </div>
 
-            <h4>Análise das Imagens Carregadas</h4>
+            <h4>Análise das Imagens Principais</h4>
 
             <div class="image-comparison">
                 <div class="image-item">
@@ -437,42 +483,89 @@ plt.show()</pre>
                 </div>
             </div>
 
+            <h4>Exercício: Análise de Outros Tipos de Imagens</h4>
+            <p>Conforme solicitado no exercício, foram analisadas imagens adicionais de diferentes formatos:</p>
+
+            <h5>Análise de Imagens em Tons de Cinza</h5>
+            <div class="code-block">
+                <pre># Análise adicional de imagem em tons de cinza
+nome_arquivo = "cameraman_bmp.png"
+caminho = pasta + nome_arquivo
+print(f"Arquivo = {caminho}")
+
+analize_imagem(caminho)</pre>
+            </div>
+
+            <div class="figure">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/3168e8e2-4530-4fde-88dd-b82a87649ada.png" alt="Exemplo adicional de imagem em tons de cinza" style="max-width: 400px;">
+                <div class="figure-caption">Figura 8: Exemplo adicional de imagem em tons de cinza para análise</div>
+            </div>
+
+            <h5>Análise de Formatos BMP e PPM</h5>
+            <div class="code-block">
+                <pre># Análise de imagem no formato PPM/BMP
+nome_arquivo = "pattern_ppm.png"
+caminho = pasta + nome_arquivo
+print(f"Arquivo = {caminho}")
+
+analize_imagem(caminho)</pre>
+            </div>
+
+            <div class="figure">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/f6ad897b-3310-4498-8bcc-ddc3806d0ca3.png" alt="Exemplo de imagem no estilo PPM para análise" style="max-width: 400px;">
+                <div class="figure-caption">Figura 9: Exemplo de padrão geométrico para análise de formato PPM/BMP</div>
+            </div>
+
             <h5>Características das Imagens Analisadas:</h5>
             <table>
                 <tr>
                     <th>Imagem</th>
-                    <th>Dimensões</th>
+                    <th>Tipo</th>
                     <th>Canais</th>
                     <th>Tipo de Dados</th>
                     <th>Profundidade de Cor</th>
                 </tr>
                 <tr>
                     <td>peppers.jpg</td>
-                    <td>384 × 512</td>
+                    <td>Colorida JPEG</td>
                     <td>3 (BGR)</td>
                     <td>uint8</td>
                     <td>8 bits por canal (24 bits total)</td>
                 </tr>
                 <tr>
                     <td>messi5.jpg</td>
-                    <td>Variables</td>
+                    <td>Fotografia JPEG</td>
                     <td>3 (BGR)</td>
                     <td>uint8</td>
                     <td>8 bits por canal (24 bits total)</td>
                 </tr>
                 <tr>
                     <td>cameraman.jpg</td>
-                    <td>256 × 256</td>
+                    <td>Tons de cinza</td>
                     <td>1 (Grayscale)</td>
                     <td>uint8</td>
-                    <td>8 bits por pixel (256 níveis de cinza)</td>
+                    <td>8 bits por pixel (256 níveis)</td>
+                </tr>
+                <tr>
+                    <td>cameraman_bmp.png</td>
+                    <td>Tons de cinza BMP</td>
+                    <td>1 (Grayscale)</td>
+                    <td>uint8</td>
+                    <td>8 bits por pixel (256 níveis)</td>
+                </tr>
+                <tr>
+                    <td>pattern_ppm.png</td>
+                    <td>Padrão PPM</td>
+                    <td>3 (RGB)</td>
+                    <td>uint8</td>
+                    <td>8 bits por canal (24 bits total)</td>
                 </tr>
             </table>
 
             <h4>Representação de Pixels e Profundidade de Cor</h4>
-            <p><strong>Para imagens coloridas (BGR):</strong></p>
+            <p><strong>Para imagens coloridas (BGR/RGB):</strong></p>
             <ul>
-                <li>Cada pixel é representado por três valores (Blue, Green, Red)</li>
+                <li>Cada pixel é representado por três valores (Blue, Green, Red ou Red, Green, Blue)</li>
                 <li>Cada canal possui 8 bits = 256 níveis possíveis (0-255)</li>
                 <li>Total de cores possíveis: 256³ = 16.777.216 cores</li>
                 <li>Espaço de armazenamento: 3 bytes por pixel</li>
@@ -489,61 +582,29 @@ plt.show()</pre>
         <section id="discussao">
             <h2>Discussão dos Resultados</h2>
             
-            <h3>Impacto da Taxa de Amostragem</h3>
-            <p>Os experimentos demonstraram claramente o impacto da taxa de amostragem na qualidade da representação digital:</p>
-            <ul>
-                <li><strong>44.1 kHz:</strong> Proporcionou representação de alta fidelidade com mais de 100 amostras por período para o tom de 440 Hz</li>
-                <li><strong>8 kHz:</strong> Ainda adequada para 440 Hz (18 amostras/período), mas marginal para 1000 Hz (8 amostras/período)</li>
-                <li>A redução da taxa de amostragem resultou em representação mais "angular" da forma de onda senoidal</li>
-            </ul>
+            <p>Durante os experimentos realizados, foi possível observar claramente como os parâmetros de digitalização influenciam diretamente a qualidade final dos sinais processados. A taxa de amostragem mostrou-se um fator crítico na representação fidedigna dos sinais de áudio. Quando utilizamos a taxa de 44.1 kHz para o tom de 440 Hz, obtivemos uma representação extremamente suave e precisa da forma de onda senoidal, com mais de 100 amostras por período. Esta alta densidade de amostras resultou em uma curva praticamente contínua, demonstrando a eficácia de taxas de amostragem elevadas para sinais de alta qualidade.</p>
 
-            <h3>Efeitos da Quantização</h3>
-            <p>A análise dos diferentes ganhos revelou a importância do ajuste adequado dos níveis de sinal:</p>
-            <ul>
-                <li><strong>Ganho baixo (0 dB):</strong> Subutilização da faixa dinâmica disponível, mas maior margem de segurança</li>
-                <li><strong>Ganho alto (+10 dB):</strong> Melhor utilização da faixa dinâmica, mas risco de saturação</li>
-                <li>O formato 32-bit float oferece excelente faixa dinâmica, minimizando problemas de quantização</li>
-            </ul>
+            <p>Em contraste, a redução da taxa de amostragem para 8 kHz revelou limitações significativas na representação dos sinais. Para o tom de 440 Hz, ainda foi possível obter uma representação adequada com aproximadamente 18 amostras por período, mantendo a forma característica da senóide. Contudo, para o sinal de 1000 Hz, a situação tornou-se crítica com apenas 8 amostras por período, resultando em uma representação angular e descontínua que compromete a qualidade do sinal digitalizado.</p>
 
-            <h3>Características das Imagens Digitais</h3>
-            <p>A análise das imagens demonstrou os fundamentos da representação digital de imagens:</p>
-            <ul>
-                <li><strong>Imagens coloridas:</strong> Requerem três canais (RGB/BGR) com maior demanda de armazenamento</li>
-                <li><strong>Imagens em tons de cinza:</strong> Utilizam apenas um canal, mais eficientes em termos de armazenamento</li>
-                <li>A profundidade de 8 bits por canal oferece resolução adequada para a maioria das aplicações</li>
-            </ul>
+            <p>A quantização demonstrou ser outro aspecto fundamental no processo de digitalização. A comparação entre os ganhos de 0 dB e +10 dB ilustrou claramente o compromisso entre a utilização da faixa dinâmica e o risco de distorção. Com ganho baixo, observou-se uma subutilização da capacidade de representação disponível, ocupando apenas 40% da faixa dinâmica do formato 32-bit float. Embora isso resulte em menor aproveitamento dos recursos disponíveis, oferece maior margem de segurança contra saturação. Por outro lado, o ganho elevado maximizou a utilização da faixa dinâmica, aproximando-se do limite máximo de 1.0, mas aumentando significativamente o risco de distorção por saturação.</p>
+
+            <p>No âmbito das imagens digitais, os experimentos revelaram as diferenças fundamentais entre os diversos formatos e tipos de representação. As imagens coloridas, como peppers.jpg e messi5.jpg, demonstraram a complexidade da representação em múltiplos canais, onde cada pixel requer três valores distintos para representar as componentes de cor. Esta abordagem proporciona uma gama cromática ampla com mais de 16 milhões de cores possíveis, mas demanda maior espaço de armazenamento e processamento computacional. Em contrapartida, as imagens em tons de cinza, exemplificadas pelo cameraman.jpg, mostraram-se mais eficientes em termos de armazenamento, utilizando apenas um byte por pixel, mas limitando-se a 256 níveis de intensidade.</p>
+
+            <p>A análise dos diferentes formatos de imagem, incluindo BMP e PPM, evidenciou como a escolha do formato afeta tanto a qualidade quanto o tamanho dos arquivos. Cada formato possui características específicas de compressão e representação que influenciam diretamente na aplicabilidade para diferentes contextos de uso.</p>
         </section>
 
         <section id="conclusao">
             <h2>Conclusão</h2>
-            <p>Os experimentos realizados no Laboratório 1 de Codificação de Sinais Multimídia proporcionaram uma compreensão prática dos fundamentos da digitalização de sinais de áudio e imagem. Os principais conhecimentos adquiridos incluem:</p>
             
-            <h4>Sinais de Áudio:</h4>
-            <ul>
-                <li>A importância da taxa de amostragem adequada conforme o teorema de Nyquist</li>
-                <li>Os efeitos da quantização na qualidade do sinal digitalizado</li>
-                <li>O impacto do ajuste de ganho na utilização da faixa dinâmica</li>
-                <li>As limitações da banda de telefonia (8 kHz) comparada à qualidade de áudio (44.1 kHz)</li>
-            </ul>
-            
-            <h4>Imagens Digitais:</h4>
-            <ul>
-                <li>A representação de pixels em imagens coloridas e em tons de cinza</li>
-                <li>A relação entre profundidade de cor e qualidade da imagem</li>
-                <li>As diferenças de armazenamento entre formatos de imagem</li>
-                <li>A importância da escolha adequada do tipo de dados (uint8, uint16)</li>
-            </ul>
-            
-            <h4>Aplicações Práticas:</h4>
-            <p>Os conceitos estudados são fundamentais para:</p>
-            <ul>
-                <li>Desenvolvimento de sistemas de áudio digital</li>
-                <li>Processamento de imagens e visão computacional</li>
-                <li>Comunicações digitais e telefonia</li>
-                <li>Compressão e codificação de sinais multimídia</li>
-            </ul>
-            
-            <p>O laboratório demonstrou na prática como os parâmetros de digitalização afetam diretamente a qualidade final dos sinais digitais, fornecendo base sólida para disciplinas avançadas em processamento digital de sinais.</p>
+            <p>Os experimentos conduzidos no Laboratório 1 proporcionaram uma compreensão prática e abrangente dos princípios fundamentais da codificação de sinais multimídia. Através da implementação hands-on de conceitos teóricos, foi possível visualizar e quantificar os efeitos dos parâmetros de digitalização na qualidade final dos sinais processados.</p>
+
+            <p>A investigação dos sinais de áudio revelou a importância crítica da adequada seleção de parâmetros de aquisição. A taxa de amostragem provou ser determinante para a fidelidade da representação, onde taxas mais elevadas resultaram em reprodução mais precisa dos sinais originais. O processo de quantização demonstrou ser um equilíbrio delicado entre maximizar a utilização dos recursos disponíveis e manter a integridade do sinal. Os experimentos com diferentes configurações de ganho ilustraram como o ajuste inadequado pode levar à degradação da qualidade ou subutilização da capacidade de representação do sistema.</p>
+
+            <p>No domínio das imagens digitais, os experimentos evidenciaram a diversidade de abordagens para representação visual. A comparação entre imagens coloridas e em tons de cinza destacou os compromissos entre qualidade visual, capacidade de representação e eficiência de armazenamento. A análise de diferentes formatos de arquivo demonstrou como as especificações técnicas influenciam diretamente na aplicabilidade prática dos sistemas de processamento de imagem.</p>
+
+            <p>Os conceitos estudados estabelecem a base fundamental para aplicações avançadas em processamento digital de sinais, incluindo sistemas de comunicação, processamento de áudio profissional, visão computacional e compressão de dados multimídia. A compreensão prática destes princípios é essencial para o desenvolvimento de soluções eficientes e adequadas às demandas específicas de cada aplicação.</p>
+
+            <p>O laboratório demonstrou que a codificação eficaz de sinais multimídia requer conhecimento técnico aprofundado dos parâmetros envolvidos, bem como a capacidade de avaliar os compromissos inerentes a cada escolha de configuração. Esta experiência prática consolida o entendimento teórico e prepara para os desafios mais complexos encontrados em aplicações profissionais da área.</p>
         </section>
 
         <section id="referencias">
