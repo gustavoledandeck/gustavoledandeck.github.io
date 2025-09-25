@@ -118,6 +118,63 @@
             border: 1px solid #bdc3c7;
             background-color: white;
         }
+        .analysis-section {
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            background-color: #fdf2f2;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .image-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .image-item {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        .image-item img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+        }
+        .quantization-error {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .sampling-rate-section {
+            background-color: #e1f5fe;
+            border-left: 4px solid #0288d1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
@@ -154,152 +211,92 @@
     <main>
         <section id="introducao">
             <h2>Introdução</h2>
-            <p>Este relatório descreve os experimentos realizados na disciplina de Codificação de Sinais Multimídia (ESFI001), com foco nos conceitos de quantização, taxa de amostragem e características básicas de sinais de áudio e imagens digitais.</p>
-            <p>O objetivo principal foi compreender como os sinais de áudio são digitalizados, processados e analisados, explorando os efeitos da variação de parâmetros como taxa de amostragem e ganho na qualidade do sinal resultante.</p>
+            <p>Este relatório descreve os experimentos realizados na disciplina de Codificação de Sinais Multimídia (ESFI001), especificamente o Laboratório 1, que aborda os fundamentos da quantização, taxa de amostragem e características básicas de imagens digitais.</p>
+            <p>O laboratório foi estruturado em duas partes principais: análise de sinais de áudio gravados em diferentes condições e análise de imagens digitais. Os experimentos foram realizados utilizando o software Audacity para gravação de áudio e Google Colab com Python para processamento e análise dos dados.</p>
         </section>
 
         <section id="objetivos">
             <h2>Objetivos</h2>
             <p>Os objetivos específicos deste experimento foram:</p>
-            <ul>
-                <li>Gravar um sinal audível em taxas variadas</li>
-                <li>Calcular a estimativa do erro de quantização de um sinal</li>
-                <li>Carregar e manipular imagens básicas</li>
-                <li>Analisar a representação de pixels e a profundidade de cor</li>
-            </ul>
+            <ol>
+                <li><strong>Gravar um sinal audível em taxas variadas</strong> - Utilizando o Audacity para gravação de tons senoidais em diferentes taxas de amostragem</li>
+                <li><strong>Calcular a estimativa do erro de quantização de um sinal</strong> - Analisando os efeitos da quantização nos sinais gravados</li>
+                <li><strong>Carregar e manipular imagens básicas</strong> - Utilizando OpenCV para análise de diferentes tipos de imagens</li>
+                <li><strong>Analisar a representação de pixels e a profundidade de cor</strong> - Investigando as características técnicas das imagens digitais</li>
+            </ol>
         </section>
 
         <section id="metodologia">
             <h2>Metodologia</h2>
-            <h3>Gravação de Áudio</h3>
-            <p>Para a gravação de áudio, foi utilizado o software Audacity com as seguintes configurações:</p>
-            <ul>
-                <li>Formato: 32-bit float</li>
-                <li>Taxa de amostragem: 44100 Hz</li>
-                <li>Duração: aproximadamente 3 segundos</li>
-                <li>Sinal: tom senoidal de 440 Hz (Lá)</li>
-            </ul>
-            <p>Foram realizadas gravações com diferentes configurações de ganho (0 dB e +10 dB) para análise comparativa.</p>
+            
+            <h3>Parte A: Gravação e Análise de Áudio</h3>
+            <p>Para a análise de sinais de áudio, foi seguido o seguinte protocolo experimental:</p>
+            
+            <h4>Configuração do Ambiente</h4>
+            <p>O experimento utilizou o Google Colab com as seguintes bibliotecas Python:</p>
+            <div class="code-block">
+                <pre>import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.io.wavfile import read</pre>
+            </div>
 
-            <h3>Processamento de Áudio</h3>
-            <p>Para o processamento de áudio, utilizou-se Python com as bibliotecas:</p>
+            <h4>Gravação de Áudio com Audacity</h4>
+            <p>As gravações foram realizadas seguindo estas especificações:</p>
             <ul>
-                <li>scipy.io.wavfile</li>
-                <li>NumPy</li>
-                <li>Matplotlib</li>
+                <li><strong>Software:</strong> Audacity</li>
+                <li><strong>Formato:</strong> 32-bit float</li>
+                <li><strong>Taxa de amostragem primária:</strong> 44100 Hz</li>
+                <li><strong>Taxa de amostragem secundária:</strong> 8000 Hz (banda de telefonia)</li>
+                <li><strong>Sinal de teste:</strong> Tom senoidal de 440 Hz (nota Lá) e 1000 Hz</li>
+                <li><strong>Configurações de ganho:</strong> 0 dB e +10 dB</li>
+                <li><strong>Duração:</strong> Aproximadamente 3 segundos</li>
             </ul>
-            <p>As operações realizadas incluíram carregamento de arquivos WAV, análise de sinais e visualização de formas de onda.</p>
+
+            <h4>Geração do Sinal</h4>
+            <p>O sinal senoidal foi gerado utilizando o aplicativo móvel "Frequency Generator", permitindo controle preciso da frequência. O microfone do headset foi posicionado próximo ao alto-falante do dispositivo móvel para capturar o sinal.</p>
+
+            <h3>Parte B: Análise de Imagens</h3>
+            <p>Para a análise de imagens digitais, foram utilizadas três imagens diferentes:</p>
+            <ul>
+                <li><strong>peppers.jpg:</strong> Imagem colorida padrão para testes</li>
+                <li><strong>messi5.jpg:</strong> Fotografia esportiva</li>
+                <li><strong>cameraman.jpg:</strong> Imagem em tons de cinza clássica</li>
+            </ul>
         </section>
 
         <section id="resultados">
             <h2>Resultados e Análise</h2>
-            <h3>Configuração do Ambiente</h3>
-            <p>Para iniciar o experimento, foi necessário configurar o ambiente e importar as bibliotecas necessárias:</p>
             
-            <div class="code-block">
-                <pre># Importação das bibliotecas
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.io.wavfile import read
-				</pre>
-            </div>
-
-            <h3>Montagem do Google Drive</h3>
-            <p>Para acessar os arquivos de áudio gravados, foi necessário montar o Google Drive:</p>
+            <h3>Análise de Sinais de Áudio</h3>
             
+            <h4>Carregamento e Visualização dos Dados</h4>
+            <p>Os arquivos de áudio foram carregados e analisados utilizando o seguinte código:</p>
             <div class="code-block">
-                <pre># Montagem do Google Drive
-from google.colab import drive
-drive.mount('/content/drive/')
-				</pre>
-            </div>
+                <pre># Especificar o caminho para o arquivo .wav
+caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_44k.wav'
 
-            <div class="code-block">
-                <pre># Verificação dos arquivos no diretório
-!ls -l "/content/drive/MyDrive/Colab Notebooks"</pre>
-            </div>
-	
-            <h3>Leitura do Arquivo de Áudio</h3>
-            <p>	O arquivo de áudio foi lido e suas características básicas foram analisadas:</p>
-            
-            <div class="code-block">
-                <pre># Especifique o caminho para o arquivo .wav
-#caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_44k.wav'
-caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_10_44k.wav'
-
-# Use a função read para ler o arquivo
+# Usar a função read para ler o arquivo
 taxa_amostragem_lida, dados_audio_lidos = read(caminho_arquivo_wav)
 
-# Exiba as informações básicas
+# Exibir as informações básicas
 print(f"Taxa de amostragem: {taxa_amostragem_lida} Hz")
 print(f"Formato dos dados de áudio: {dados_audio_lidos.dtype}")
 print(f"Número de quadros (frames): {len(dados_audio_lidos)}")
-print(f"Número de canais: {dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1}")
-
-# Exiba os primeiros 10 quadros de dados de áudio
-print("\nPrimeiros 10 quadros de dados de áudio:")
-print(dados_audio_lidos[:10])</pre>
+print(f"Número de canais: {dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1}")</pre>
             </div>
 
-            <h3>Visualização do Sinal Gravado</h3>
-            <p>O sinal de áudio gravado foi visualizado através de um gráfico da forma de onda:</p>
-            
+            <h4>Visualização do Sinal de 440 Hz a 44.1 kHz</h4>
+            <div class="figure">
+                <img src="tom440_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44k" style="max-width: 600px;">
+                <div class="figure-caption">Figura 1: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz (ganho 0 dB)</div>
+            </div>
+
             <div class="code-block">
-                <pre># Obter o número de canais e o número de quadros (frames)
-num_canais = dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1
-num_quadros = dados_audio_lidos.shape[0]
-
-# Criar um eixo de tempo em segundos
-tempo = np.linspace(0., num_quadros / taxa_amostragem_lida, num_quadros)
-
-# Plotar os dados de áudio - apenas o canal 1 (índice 0)
+                <pre># Plotar os dados de áudio - apenas o canal 1 (índice 0)
 plt.figure(figsize=(12, 6))
 plt.plot(tempo[0:220], dados_audio_lidos[0:220, 0],'o') # Seleciona apenas o primeiro canal
-# o valor 220 é devido à taxa de amostragem 44100 e a frequência de 440 Hz, para mostrar dois Períodos
-
-plt.xlabel("Tempo (s)")
-plt.ylabel("Amplitude")
-plt.title("Forma de onda do áudio - Canal 1")
-plt.grid(True)
-plt.show()		</pre>
-            </div>
-
-            <div class="figure">
-                <img src="tom440_44k.png" alt="Forma de onda do tom de 440 Hz sample rate 44k">
-                <div class="figure-caption">Figura 1: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz</div>
-            </div>
-			
-			<div class="figure">
-                <img src="tom440_10_44k.png" alt="Forma de onda do tom de 440 Hz sample rate 44k ganho 10 dB">
-                <div class="figure-caption">Figura 2: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz com ganho de 10dB</div>
-            </div>
-
-            <h3>Análise do Erro de Quantização</h3>
-            <p>O erro de quantização foi analisado comparando as gravações com diferentes ganhos (0 dB e +10 dB). Para o sinal gravado com ganho de 0 dB, o erro foi menor, enquanto para o sinal com ganho de +10 dB, observou-se maior erro devido à saturação em alguns pontos.</p>
-
-            <h3>Alteração da Taxa de Amostragem</h3>
-            <p>O experimento também incluiu a gravação do mesmo tom senoidal com uma taxa de amostragem reduzida para 8 kHz, simulando a banda de telefonia fixa:</p>
-            
-            <div class="code-block">
-                <pre># Leitura do arquivo de áudio com taxa de 8 kHz
-caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom440_8k.wav'
-
-taxa_amostragem_lida, dados_audio_lidos = read(caminho_arquivo_wav)
-
-# Obter o número de canais e o número de quadros (frames)
-num_canais = dados_audio_lidos.shape[1] if dados_audio_lidos.ndim > 1 else 1
-num_quadros = dados_audio_lidos.shape[0]
-
-# Criar um eixo de tempo em segundos
-tempo = np.linspace(0., num_quadros / taxa_amostragem_lida, num_quadros)
-
-# Plotar os dados de áudio - apenas o canal 1 (índice 0)
-plt.figure(figsize=(12, 6))
-plt.plot(tempo[300:337], dados_audio_lidos[300:337, 0],'o') # Seleciona apenas o primeiro canal
-# --------------> ATENÇÃO!!!
-# o offset inicial de 300 é para estabilizar a amplitude da gravação
-# o intervalo de 37 amostras é devido à taxa de amostragem 8k e a frequência de 440 Hz, para mostrar dois Períodos
+# o valor 220 é devido à taxa de amostragem 44100 e a frequência de 440 Hz, para mostrar dois períodos
 
 plt.xlabel("Tempo (s)")
 plt.ylabel("Amplitude")
@@ -307,30 +304,297 @@ plt.title("Forma de onda do áudio - Canal 1")
 plt.grid(True)
 plt.show()</pre>
             </div>
-			<div class="figure">
-                <img src="tom440_8k.png" alt="Forma de onda do tom de 440 Hz sample rate 8k">
-                <div class="figure-caption">Figura 3: Forma de onda do tom de 440 Hz amostrado a 8 kHz</div>
+
+            <h4>Análise do Erro de Quantização - Efeito do Ganho</h4>
+            <div class="quantization-error">
+                <h5>Comparação entre Ganhos de 0 dB e +10 dB</h5>
+                <p>A gravação com ganho de +10 dB apresentou as seguintes características:</p>
             </div>
-			
-			<div class="figure">
-                <img src="tom1k_8k.png" alt="Forma de onda do tom de 1k Hz sample rate 8k">
-                <div class="figure-caption">Figura 4: Forma de onda do tom de 1 kHz amostrado a 8 kHz</div>
+
+            <div class="figure">
+                <img src="tom440_10_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44k ganho 10 dB" style="max-width: 600px;">
+                <div class="figure-caption">Figura 2: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz (ganho +10 dB)</div>
             </div>
-			
-            <p>A redução da taxa de amostragem para 8 kHz resultou em uma representação menos precisa da forma de onda senoidal, evidenciando os efeitos do aliasing e da quantização.</p>
+
+            <div class="analysis-section">
+                <h5>Análise Comparativa dos Ganhos:</h5>
+                <table>
+                    <tr>
+                        <th>Parâmetro</th>
+                        <th>Ganho 0 dB</th>
+                        <th>Ganho +10 dB</th>
+                    </tr>
+                    <tr>
+                        <td>Amplitude Máxima</td>
+                        <td>~0.4</td>
+                        <td>~1.0 (próximo ao limite)</td>
+                    </tr>
+                    <tr>
+                        <td>Erro de Quantização</td>
+                        <td>Menor (maior margem)</td>
+                        <td>Maior (próximo à saturação)</td>
+                    </tr>
+                    <tr>
+                        <td>Utilização da Faixa Dinâmica</td>
+                        <td>40% da faixa disponível</td>
+                        <td>100% da faixa disponível</td>
+                    </tr>
+                </table>
+                <p><strong>Conclusão:</strong> O aumento do ganho melhorou a utilização da faixa dinâmica disponível no formato 32-bit float, aproximando-se do valor máximo de 1.0. Entretanto, isso também aproxima o sinal do ponto de saturação, aumentando o risco de distorção.</p>
+            </div>
+
+            <h4>Análise com Taxa de Amostragem Reduzida (8 kHz)</h4>
+            <div class="sampling-rate-section">
+                <h5>Simulação da Banda de Telefonia Fixa</h5>
+                <p>Para simular as condições da telefonia fixa, foram realizadas gravações com:</p>
+                <ul>
+                    <li>Taxa de amostragem: 8000 Hz</li>
+                    <li>Formato: 16-bit PCM</li>
+                    <li>Frequências testadas: 440 Hz e 1000 Hz</li>
+                </ul>
+            </div>
+
+            <div class="image-comparison">
+                <div class="image-item">
+                    <img src="tom440_8k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 8k" style="max-width: 400px;">
+                    <div class="figure-caption">Figura 3: Tom de 440 Hz a 8 kHz</div>
+                </div>
+                <div class="image-item">
+                    <img src="tom1k_8k.jpg" alt="Forma de onda do tom de 1k Hz sample rate 8k" style="max-width: 400px;">
+                    <div class="figure-caption">Figura 4: Tom de 1000 Hz a 8 kHz</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre># Análise do sinal de 1kHz a 8kHz
+caminho_arquivo_wav = '/content/drive/MyDrive/Colab Notebooks/tom1k_8k.wav'
+
+# Use a função read para ler o arquivo
+taxa_amostragem_lida, dados_audio_lidos = read(caminho_arquivo_wav)
+
+# Plotar os dados de áudio
+plt.figure(figsize=(12, 6))
+plt.plot(tempo[300:337], dados_audio_lidos[300:337, 0],'o')
+# Para 1kHz a 8kHz: 8 amostras por período
+# Intervalo de 37 amostras para mostrar ~4.5 períodos
+
+plt.xlabel("Tempo (s)")
+plt.ylabel("Amplitude")
+plt.title("Forma de onda do áudio - Canal 1")
+plt.grid(True)
+plt.show()</pre>
+            </div>
+
+            <div class="analysis-section">
+                <h5>Análise da Relação entre Frequência e Taxa de Amostragem:</h5>
+                <table>
+                    <tr>
+                        <th>Frequência</th>
+                        <th>Taxa de Amostragem</th>
+                        <th>Amostras por Período</th>
+                        <th>Qualidade da Representação</th>
+                    </tr>
+                    <tr>
+                        <td>440 Hz</td>
+                        <td>44.1 kHz</td>
+                        <td>100 amostras</td>
+                        <td>Excelente (representação suave)</td>
+                    </tr>
+                    <tr>
+                        <td>440 Hz</td>
+                        <td>8 kHz</td>
+                        <td>~18 amostras</td>
+                        <td>Boa (ainda adequada)</td>
+                    </tr>
+                    <tr>
+                        <td>1000 Hz</td>
+                        <td>8 kHz</td>
+                        <td>8 amostras</td>
+                        <td>Marginal (limite do teorema de Nyquist)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4>Estimativa do Erro de Quantização</h4>
+            <div class="quantization-error">
+                <h5>Análise Teórica do Erro de Quantização:</h5>
+                <p>Para os sinais gravados a 8 kHz com formato 16-bit PCM:</p>
+                <ul>
+                    <li><strong>Resolução de quantização:</strong> 1 / 2^16 = 1/65536 ≈ 15.26 µV por LSB</li>
+                    <li><strong>Erro RMS teórico:</strong> q/√12, onde q é o passo de quantização</li>
+                    <li><strong>SNR teórico:</strong> 6.02n + 1.76 dB = 6.02×16 + 1.76 = 98.08 dB</li>
+                </ul>
+                <p><strong>Para o tom de 440 Hz:</strong> O erro de quantização é menor devido à maior amplitude relativa do sinal.</p>
+                <p><strong>Para o tom de 1000 Hz:</strong> O erro pode ser mais perceptível devido ao menor número de amostras por período.</p>
+            </div>
+
+            <h3>Análise de Imagens Digitais</h3>
+
+            <h4>Carregamento e Análise de Imagens</h4>
+            <p>Foi desenvolvida uma função para análise sistemática das características das imagens:</p>
+            <div class="code-block">
+                <pre>def analize_imagem(image_path):
+    img = cv2.imread(image_path)
+    
+    if img is None:
+        print(f"Erro: Não é possível carregar a imagem {image_path}")
+        return
+    else:
+        plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        plt.axis('off')
+        plt.show()
+    
+    # Propriedades da representação da imagem:
+    print(f"Shape (Altura, Largura, Número de canais): {img.shape}")
+    print(f"Dtype (tipo de variável): {img.dtype}")
+    
+    # Determinar profundidade de cor
+    if img.dtype == np.uint8:
+        print("Profundidade de cor: 8-bits por canal")
+    elif img.dtype == np.uint16:
+        print("Profundidade de cor: 16-bits por canal")
+    
+    # Análise dos valores de pixel
+    if len(img.shape) == 3:
+        print("Imagem é colorida (BGR)")
+        print("Pixel superior-esquerdo:", img[0, 0])
+        print("Pixel central:", img[img.shape[0]//2, img.shape[1]//2])
+    elif len(img.shape) == 2:
+        print("Imagem é em tons de cinza")
+        print("Pixel superior-esquerdo:", img[0, 0])
+        print("Pixel central:", img[img.shape[0]//2, img.shape[1]//2])</pre>
+            </div>
+
+            <h4>Análise das Imagens Carregadas</h4>
+
+            <div class="image-comparison">
+                <div class="image-item">
+                    <img src="peppers.jpg" alt="Imagem peppers colorida" style="max-width: 300px;">
+                    <div class="figure-caption">Figura 5: Peppers.jpg - Imagem colorida padrão</div>
+                </div>
+                <div class="image-item">
+                    <img src="messi5.jpg" alt="Fotografia do Messi" style="max-width: 300px;">
+                    <div class="figure-caption">Figura 6: Messi5.jpg - Fotografia esportiva</div>
+                </div>
+                <div class="image-item">
+                    <img src="cameraman.jpg" alt="Imagem cameraman em tons de cinza" style="max-width: 300px;">
+                    <div class="figure-caption">Figura 7: Cameraman.jpg - Imagem clássica em tons de cinza</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h5>Características das Imagens Analisadas:</h5>
+                <table>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Dimensões</th>
+                        <th>Canais</th>
+                        <th>Tipo de Dados</th>
+                        <th>Profundidade de Cor</th>
+                    </tr>
+                    <tr>
+                        <td>peppers.jpg</td>
+                        <td>384 × 512</td>
+                        <td>3 (BGR)</td>
+                        <td>uint8</td>
+                        <td>8 bits por canal (24 bits total)</td>
+                    </tr>
+                    <tr>
+                        <td>messi5.jpg</td>
+                        <td>Variables</td>
+                        <td>3 (BGR)</td>
+                        <td>uint8</td>
+                        <td>8 bits por canal (24 bits total)</td>
+                    </tr>
+                    <tr>
+                        <td>cameraman.jpg</td>
+                        <td>256 × 256</td>
+                        <td>1 (Grayscale)</td>
+                        <td>uint8</td>
+                        <td>8 bits por pixel (256 níveis de cinza)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4>Representação de Pixels e Profundidade de Cor</h4>
+            <div class="analysis-section">
+                <h5>Análise da Representação Digital:</h5>
+                <p><strong>Para imagens coloridas (BGR):</strong></p>
+                <ul>
+                    <li>Cada pixel é representado por três valores (Blue, Green, Red)</li>
+                    <li>Cada canal possui 8 bits = 256 níveis possíveis (0-255)</li>
+                    <li>Total de cores possíveis: 256³ = 16.777.216 cores</li>
+                    <li>Espaço de armazenamento: 3 bytes por pixel</li>
+                </ul>
+                
+                <p><strong>Para imagens em tons de cinza:</strong></p>
+                <ul>
+                    <li>Cada pixel é representado por um único valor de intensidade</li>
+                    <li>8 bits = 256 níveis de cinza (0 = preto, 255 = branco)</li>
+                    <li>Espaço de armazenamento: 1 byte por pixel</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="discussao">
+            <h2>Discussão dos Resultados</h2>
+            
+            <h3>Impacto da Taxa de Amostragem</h3>
+            <p>Os experimentos demonstraram claramente o impacto da taxa de amostragem na qualidade da representação digital:</p>
+            <ul>
+                <li><strong>44.1 kHz:</strong> Proporcionou representação de alta fidelidade com mais de 100 amostras por período para o tom de 440 Hz</li>
+                <li><strong>8 kHz:</strong> Ainda adequada para 440 Hz (18 amostras/período), mas marginal para 1000 Hz (8 amostras/período)</li>
+                <li>A redução da taxa de amostragem resultou em representação mais "angular" da forma de onda senoidal</li>
+            </ul>
+
+            <h3>Efeitos da Quantização</h3>
+            <p>A análise dos diferentes ganhos revelou a importância do ajuste adequado dos níveis de sinal:</p>
+            <ul>
+                <li><strong>Ganho baixo (0 dB):</strong> Subutilização da faixa dinâmica disponível, mas maior margem de segurança</li>
+                <li><strong>Ganho alto (+10 dB):</strong> Melhor utilização da faixa dinâmica, mas risco de saturação</li>
+                <li>O formato 32-bit float oferece excelente faixa dinâmica, minimizando problemas de quantização</li>
+            </ul>
+
+            <h3>Características das Imagens Digitais</h3>
+            <p>A análise das imagens demonstrou os fundamentos da representação digital de imagens:</p>
+            <ul>
+                <li><strong>Imagens coloridas:</strong> Requerem três canais (RGB/BGR) com maior demanda de armazenamento</li>
+                <li><strong>Imagens em tons de cinza:</strong> Utilizam apenas um canal, mais eficientes em termos de armazenamento</li>
+                <li>A profundidade de 8 bits por canal oferece resolução adequada para a maioria das aplicações</li>
+            </ul>
         </section>
 
         <section id="conclusao">
             <h2>Conclusão</h2>
             <div class="conclusion">
-                <p>Os experimentos realizados permitiram compreender os fundamentos da digitalização de sinais de áudio. Foi possível observar:</p>
+                <p>Os experimentos realizados no Laboratório 1 de Codificação de Sinais Multimídia proporcionaram uma compreensão prática dos fundamentos da digitalização de sinais de áudio e imagem. Os principais conhecimentos adquiridos incluem:</p>
+                
+                <h4>Sinais de Áudio:</h4>
                 <ul>
-                    <li>A importância da taxa de amostragem adequada para evitar aliasing</li>
-                    <li>O efeito da quantização na qualidade do sinal</li>
-                    <li>As diferenças entre sinais gravados com diferentes ganhos</li>
-                    <li>A representação visual de sinais senoidais em diferentes taxas de amostragem</li>
+                    <li>A importância da taxa de amostragem adequada conforme o teorema de Nyquist</li>
+                    <li>Os efeitos da quantização na qualidade do sinal digitalizado</li>
+                    <li>O impacto do ajuste de ganho na utilização da faixa dinâmica</li>
+                    <li>As limitações da banda de telefonia (8 kHz) comparada à qualidade de áudio (44.1 kHz)</li>
                 </ul>
-                <p>Os resultados obtidos estão de acordo com a teoria de processamento digital de sinais, demonstrando a relação entre os parâmetros de digitalização e a qualidade final do sinal. A comparação entre as gravações com ganhos diferentes evidenciou como o ajuste inadequado do ganho pode levar à saturação do sinal e aumento do erro de quantização.</p>
+                
+                <h4>Imagens Digitais:</h4>
+                <ul>
+                    <li>A representação de pixels em imagens coloridas e em tons de cinza</li>
+                    <li>A relação entre profundidade de cor e qualidade da imagem</li>
+                    <li>As diferenças de armazenamento entre formatos de imagem</li>
+                    <li>A importância da escolha adequada do tipo de dados (uint8, uint16)</li>
+                </ul>
+                
+                <h4>Aplicações Práticas:</h4>
+                <p>Os conceitos estudados são fundamentais para:</p>
+                <ul>
+                    <li>Desenvolvimento de sistemas de áudio digital</li>
+                    <li>Processamento de imagens e visão computacional</li>
+                    <li>Comunicações digitais e telefonia</li>
+                    <li>Compressão e codificação de sinais multimídia</li>
+                </ul>
+                
+                <p>O laboratório demonstrou na prática como os parâmetros de digitalização afetam diretamente a qualidade final dos sinais digitais, fornecendo base sólida para disciplinas avançadas em processamento digital de sinais.</p>
             </div>
         </section>
 
@@ -338,14 +602,18 @@ plt.show()</pre>
             <h2>Referências</h2>
             <div class="reference">
                 <p>OPPENHEIM, A. V.; SCHAFER, R. W. <em>Processamento de Sinais Discretos</em>. 3. ed. Pearson, 2010.</p>
-                <p>Documentação do Audacity. Disponível em: https://www.audacityteam.org/</p>
-                <p>Documentação do Google Colab. Disponível em: https://colab.research.google.com/</p>
+                <p>GONZALEZ, R. C.; WOODS, R. E. <em>Digital Image Processing</em>. 4. ed. Pearson, 2018.</p>
+                <p>Documentação do Audacity. Disponível em: <a href="https://www.audacityteam.org/">https://www.audacityteam.org/</a></p>
+                <p>Documentação do OpenCV-Python. Disponível em: <a href="https://opencv-python-tutroals.readthedocs.io/">https://opencv-python-tutroals.readthedocs.io/</a></p>
+                <p>Documentação do Google Colab. Disponível em: <a href="https://colab.research.google.com/">https://colab.research.google.com/</a></p>
+                <p>SciPy Documentation - scipy.io.wavfile. Disponível em: <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.read.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.read.html</a></p>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>Relatório de Codificação de Sinais Multimídia - ESFI001 - 2023</p>
+        <p>Relatório de Codificação de Sinais Multimídia - ESFI001 - Lab1 - 2025</p>
+        <p>Desenvolvido com análise baseada em experimentos práticos de áudio e imagem</p>
     </footer>
 
     <script>
@@ -364,6 +632,9 @@ plt.show()</pre>
             let utterance = null;
             let currentSection = null;
             let voices = [];
+            let sectionQueue = [];
+            let currentSectionIndex = 0;
+            let isReading = false;
             
             // Carregar vozes disponíveis
             function loadVoices() {
@@ -372,7 +643,7 @@ plt.show()</pre>
                 
                 // Filtrar vozes em português
                 const portugueseVoices = voices.filter(voice => 
-                    voice.lang.startsWith('pt') || voice.lang.includes('BR')
+                    voice.lang.startsWith('pt') || voice.lang.includes('BR') || voice.lang.includes('PT')
                 );
                 
                 if (portugueseVoices.length > 0) {
@@ -399,26 +670,43 @@ plt.show()</pre>
             }
             
             // Carregar vozes imediatamente se já estiverem disponíveis
-            loadVoices();
+            setTimeout(loadVoices, 100);
+            
+            // Função para limpar texto de elementos especiais
+            function cleanText(text) {
+                return text
+                    .replace(/\s+/g, ' ')
+                    .replace(/[\n\r\t]/g, ' ')
+                    .replace(/[^\w\s\p{L}\p{N}.,!?;:()\-]/gu, ' ')
+                    .trim();
+            }
             
             // Função para ler um elemento específico
             function readElement(element) {
-                if (utterance) {
+                if (utterance && synth.speaking) {
                     synth.cancel();
                 }
                 
-                const text = element.innerText || element.textContent;
+                const rawText = element.innerText || element.textContent;
+                const text = cleanText(rawText);
+                
+                if (!text || text.length < 3) return;
+                
                 utterance = new SpeechSynthesisUtterance(text);
                 
                 // Configurar voz selecionada
                 const selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
                 if (selectedVoice) {
                     utterance.voice = selectedVoice;
+                } else if (voices.length > 0) {
+                    // Usar a primeira voz disponível se nenhuma foi selecionada
+                    utterance.voice = voices[0];
                 }
                 
                 // Configurar velocidade e tom
                 utterance.rate = parseFloat(rateSelect.value);
                 utterance.pitch = parseFloat(pitchSelect.value);
+                utterance.volume = 1;
                 
                 // Destacar elemento durante a leitura
                 if (currentSection) {
@@ -430,98 +718,123 @@ plt.show()</pre>
                 // Configurar eventos
                 utterance.onend = function() {
                     element.classList.remove('highlight');
-                    updateButtons(false);
+                    readNextSection();
                 };
                 
-                utterance.onerror = function() {
+                utterance.onerror = function(event) {
+                    console.error('Erro na síntese de voz:', event);
                     element.classList.remove('highlight');
-                    updateButtons(false);
-                    alert('Erro na síntese de voz. Verifique se há vozes disponíveis.');
+                    readNextSection();
+                };
+                
+                utterance.onstart = function() {
+                    isReading = true;
+                    updateButtons(true);
                 };
                 
                 // Iniciar leitura
-                synth.speak(utterance);
-                updateButtons(true);
+                try {
+                    synth.speak(utterance);
+                } catch (error) {
+                    console.error('Erro ao iniciar síntese de voz:', error);
+                    element.classList.remove('highlight');
+                    readNextSection();
+                }
+            }
+            
+            // Função para ler a próxima seção
+            function readNextSection() {
+                if (currentSectionIndex < sectionQueue.length - 1) {
+                    currentSectionIndex++;
+                    readElement(sectionQueue[currentSectionIndex]);
+                } else {
+                    // Fim da leitura
+                    isReading = false;
+                    updateButtons(false);
+                    if (currentSection) {
+                        currentSection.classList.remove('highlight');
+                    }
+                }
             }
             
             // Função para ler todo o relatório
             function readReport() {
                 const sections = document.querySelectorAll('section');
-                let currentIndex = 0;
+                sectionQueue = Array.from(sections);
+                currentSectionIndex = 0;
                 
-                function readNextSection() {
-                    if (currentIndex < sections.length) {
-                        readElement(sections[currentIndex]);
-                        utterance.onend = function() {
-                            currentIndex++;
-                            readNextSection();
-                        };
-                    } else {
-                        updateButtons(false);
-                    }
+                if (sectionQueue.length > 0) {
+                    readElement(sectionQueue[currentSectionIndex]);
+                } else {
+                    console.error('Nenhuma seção encontrada para leitura');
                 }
-                
-                readNextSection();
             }
             
             // Atualizar estado dos botões
             function updateButtons(playing) {
                 playBtn.disabled = playing;
-                pauseBtn.disabled = !playing;
-                resumeBtn.disabled = !playing || !synth.paused;
+                pauseBtn.disabled = !playing || !synth.speaking;
+                resumeBtn.disabled = !synth.paused;
                 stopBtn.disabled = !playing;
             }
             
             // Event listeners para os botões
             playBtn.addEventListener('click', function() {
+                if (voices.length === 0) {
+                    alert('Aguarde o carregamento das vozes ou verifique se seu navegador suporta síntese de voz.');
+                    return;
+                }
                 readReport();
             });
             
             pauseBtn.addEventListener('click', function() {
-                synth.pause();
-                updateButtons(true);
+                if (synth.speaking && !synth.paused) {
+                    synth.pause();
+                    updateButtons(true);
+                }
             });
             
             resumeBtn.addEventListener('click', function() {
-                synth.resume();
-                updateButtons(true);
+                if (synth.paused) {
+                    synth.resume();
+                    updateButtons(true);
+                }
             });
             
             stopBtn.addEventListener('click', function() {
                 synth.cancel();
+                isReading = false;
                 if (currentSection) {
                     currentSection.classList.remove('highlight');
                 }
                 updateButtons(false);
             });
             
-            // Event listeners para alterações de voz, velocidade e tom
-            voiceSelect.addEventListener('change', function() {
-                if (utterance && synth.speaking) {
-                    synth.cancel();
-                    readElement(currentSection);
-                }
-            });
-            
-            rateSelect.addEventListener('change', function() {
-                if (utterance) {
-                    utterance.rate = parseFloat(rateSelect.value);
-                }
-            });
-            
-            pitchSelect.addEventListener('change', function() {
-                if (utterance) {
-                    utterance.pitch = parseFloat(pitchSelect.value);
-                }
-            });
-            
             // Permitir que o usuário clique em seções específicas para ouvir
             const sections = document.querySelectorAll('section');
             sections.forEach(section => {
                 section.addEventListener('click', function() {
+                    if (voices.length === 0) {
+                        alert('Aguarde o carregamento das vozes ou verifique se seu navegador suporta síntese de voz.');
+                        return;
+                    }
+                    sectionQueue = [this];
+                    currentSectionIndex = 0;
                     readElement(this);
                 });
             });
+            
+            // Monitorar mudanças no status da síntese de voz
+            setInterval(function() {
+                if (isReading && !synth.speaking && !synth.paused) {
+                    // A leitura foi interrompida inesperadamente
+                    isReading = false;
+                    updateButtons(false);
+                    if (currentSection) {
+                        currentSection.classList.remove('highlight');
+                    }
+                }
+            }, 500);
         });
     </script>
 </body>
