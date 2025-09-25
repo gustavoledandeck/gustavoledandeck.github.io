@@ -118,13 +118,6 @@
             border: 1px solid #bdc3c7;
             background-color: white;
         }
-        .analysis-section {
-            border-left: 4px solid #e74c3c;
-            padding: 15px;
-            background-color: #fdf2f2;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
         .image-comparison {
             display: flex;
             flex-wrap: wrap;
@@ -143,20 +136,6 @@
             height: auto;
             border: 2px solid #3498db;
             border-radius: 8px;
-        }
-        .quantization-error {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
-        .sampling-rate-section {
-            background-color: #e1f5fe;
-            border-left: 4px solid #0288d1;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
         }
         table {
             width: 100%;
@@ -306,53 +285,40 @@ plt.show()</pre>
             </div>
 
             <h4>Análise do Erro de Quantização - Efeito do Ganho</h4>
-            <div class="quantization-error">
-                <h5>Comparação entre Ganhos de 0 dB e +10 dB</h5>
-                <p>A gravação com ganho de +10 dB apresentou as seguintes características:</p>
-            </div>
+            <p>A gravação com ganho de +10 dB apresentou as seguintes características:</p>
 
             <div class="figure">
                 <img src="tom440_10_44k.jpg" alt="Forma de onda do tom de 440 Hz sample rate 44k ganho 10 dB" style="max-width: 600px;">
                 <div class="figure-caption">Figura 2: Forma de onda do tom de 440 Hz amostrado a 44.1 kHz (ganho +10 dB)</div>
             </div>
 
-            <div class="analysis-section">
-                <h5>Análise Comparativa dos Ganhos:</h5>
-                <table>
-                    <tr>
-                        <th>Parâmetro</th>
-                        <th>Ganho 0 dB</th>
-                        <th>Ganho +10 dB</th>
-                    </tr>
-                    <tr>
-                        <td>Amplitude Máxima</td>
-                        <td>~0.4</td>
-                        <td>~1.0 (próximo ao limite)</td>
-                    </tr>
-                    <tr>
-                        <td>Erro de Quantização</td>
-                        <td>Menor (maior margem)</td>
-                        <td>Maior (próximo à saturação)</td>
-                    </tr>
-                    <tr>
-                        <td>Utilização da Faixa Dinâmica</td>
-                        <td>40% da faixa disponível</td>
-                        <td>100% da faixa disponível</td>
-                    </tr>
-                </table>
-                <p><strong>Conclusão:</strong> O aumento do ganho melhorou a utilização da faixa dinâmica disponível no formato 32-bit float, aproximando-se do valor máximo de 1.0. Entretanto, isso também aproxima o sinal do ponto de saturação, aumentando o risco de distorção.</p>
-            </div>
+            <h5>Comparação entre Ganhos de 0 dB e +10 dB:</h5>
+            <table>
+                <tr>
+                    <th>Parâmetro</th>
+                    <th>Ganho 0 dB</th>
+                    <th>Ganho +10 dB</th>
+                </tr>
+                <tr>
+                    <td>Amplitude Máxima</td>
+                    <td>~0.4</td>
+                    <td>~1.0 (próximo ao limite)</td>
+                </tr>
+                <tr>
+                    <td>Erro de Quantização</td>
+                    <td>Menor (maior margem)</td>
+                    <td>Maior (próximo à saturação)</td>
+                </tr>
+                <tr>
+                    <td>Utilização da Faixa Dinâmica</td>
+                    <td>40% da faixa disponível</td>
+                    <td>100% da faixa disponível</td>
+                </tr>
+            </table>
+            <p><strong>Conclusão:</strong> O aumento do ganho melhorou a utilização da faixa dinâmica disponível no formato 32-bit float, aproximando-se do valor máximo de 1.0. Entretanto, isso também aproxima o sinal do ponto de saturação, aumentando o risco de distorção.</p>
 
             <h4>Análise com Taxa de Amostragem Reduzida (8 kHz)</h4>
-            <div class="sampling-rate-section">
-                <h5>Simulação da Banda de Telefonia Fixa</h5>
-                <p>Para simular as condições da telefonia fixa, foram realizadas gravações com:</p>
-                <ul>
-                    <li>Taxa de amostragem: 8000 Hz</li>
-                    <li>Formato: 16-bit PCM</li>
-                    <li>Frequências testadas: 440 Hz e 1000 Hz</li>
-                </ul>
-            </div>
+            <p><strong>Simulação da Banda de Telefonia Fixa:</strong> Para simular as condições da telefonia fixa, foram realizadas gravações com taxa de amostragem de 8000 Hz, formato 16-bit PCM e frequências testadas de 440 Hz e 1000 Hz.</p>
 
             <div class="image-comparison">
                 <div class="image-item">
@@ -385,48 +351,43 @@ plt.grid(True)
 plt.show()</pre>
             </div>
 
-            <div class="analysis-section">
-                <h5>Análise da Relação entre Frequência e Taxa de Amostragem:</h5>
-                <table>
-                    <tr>
-                        <th>Frequência</th>
-                        <th>Taxa de Amostragem</th>
-                        <th>Amostras por Período</th>
-                        <th>Qualidade da Representação</th>
-                    </tr>
-                    <tr>
-                        <td>440 Hz</td>
-                        <td>44.1 kHz</td>
-                        <td>100 amostras</td>
-                        <td>Excelente (representação suave)</td>
-                    </tr>
-                    <tr>
-                        <td>440 Hz</td>
-                        <td>8 kHz</td>
-                        <td>~18 amostras</td>
-                        <td>Boa (ainda adequada)</td>
-                    </tr>
-                    <tr>
-                        <td>1000 Hz</td>
-                        <td>8 kHz</td>
-                        <td>8 amostras</td>
-                        <td>Marginal (limite do teorema de Nyquist)</td>
-                    </tr>
-                </table>
-            </div>
+            <h5>Relação entre Frequência e Taxa de Amostragem:</h5>
+            <table>
+                <tr>
+                    <th>Frequência</th>
+                    <th>Taxa de Amostragem</th>
+                    <th>Amostras por Período</th>
+                    <th>Qualidade da Representação</th>
+                </tr>
+                <tr>
+                    <td>440 Hz</td>
+                    <td>44.1 kHz</td>
+                    <td>100 amostras</td>
+                    <td>Excelente (representação suave)</td>
+                </tr>
+                <tr>
+                    <td>440 Hz</td>
+                    <td>8 kHz</td>
+                    <td>~18 amostras</td>
+                    <td>Boa (ainda adequada)</td>
+                </tr>
+                <tr>
+                    <td>1000 Hz</td>
+                    <td>8 kHz</td>
+                    <td>8 amostras</td>
+                    <td>Marginal (limite do teorema de Nyquist)</td>
+                </tr>
+            </table>
 
             <h4>Estimativa do Erro de Quantização</h4>
-            <div class="quantization-error">
-                <h5>Análise Teórica do Erro de Quantização:</h5>
-                <p>Para os sinais gravados a 8 kHz com formato 16-bit PCM:</p>
-                <ul>
-                    <li><strong>Resolução de quantização:</strong> 1 / 2^16 = 1/65536 ≈ 15.26 µV por LSB</li>
-                    <li><strong>Erro RMS teórico:</strong> q/√12, onde q é o passo de quantização</li>
-                    <li><strong>SNR teórico:</strong> 6.02n + 1.76 dB = 6.02×16 + 1.76 = 98.08 dB</li>
-                </ul>
-                <p><strong>Para o tom de 440 Hz:</strong> O erro de quantização é menor devido à maior amplitude relativa do sinal.</p>
-                <p><strong>Para o tom de 1000 Hz:</strong> O erro pode ser mais perceptível devido ao menor número de amostras por período.</p>
-            </div>
+            <p><strong>Análise Teórica do Erro de Quantização:</strong> Para os sinais gravados a 8 kHz com formato 16-bit PCM:</p>
+            <ul>
+                <li><strong>Resolução de quantização:</strong> 1 / 2^16 = 1/65536 ≈ 15.26 µV por LSB</li>
+                <li><strong>Erro RMS teórico:</strong> q/√12, onde q é o passo de quantização</li>
+                <li><strong>SNR teórico:</strong> 6.02n + 1.76 dB = 6.02×16 + 1.76 = 98.08 dB</li>
+            </ul>
+            <p><strong>Para o tom de 440 Hz:</strong> O erro de quantização é menor devido à maior amplitude relativa do sinal.</p>
+            <p><strong>Para o tom de 1000 Hz:</strong> O erro pode ser mais perceptível devido ao menor número de amostras por período.</p>
 
             <h3>Análise de Imagens Digitais</h3>
 
@@ -482,58 +443,53 @@ plt.show()</pre>
                 </div>
             </div>
 
-            <div class="analysis-section">
-                <h5>Características das Imagens Analisadas:</h5>
-                <table>
-                    <tr>
-                        <th>Imagem</th>
-                        <th>Dimensões</th>
-                        <th>Canais</th>
-                        <th>Tipo de Dados</th>
-                        <th>Profundidade de Cor</th>
-                    </tr>
-                    <tr>
-                        <td>peppers.jpg</td>
-                        <td>384 × 512</td>
-                        <td>3 (BGR)</td>
-                        <td>uint8</td>
-                        <td>8 bits por canal (24 bits total)</td>
-                    </tr>
-                    <tr>
-                        <td>messi5.jpg</td>
-                        <td>Variables</td>
-                        <td>3 (BGR)</td>
-                        <td>uint8</td>
-                        <td>8 bits por canal (24 bits total)</td>
-                    </tr>
-                    <tr>
-                        <td>cameraman.jpg</td>
-                        <td>256 × 256</td>
-                        <td>1 (Grayscale)</td>
-                        <td>uint8</td>
-                        <td>8 bits por pixel (256 níveis de cinza)</td>
-                    </tr>
-                </table>
-            </div>
+            <h5>Características das Imagens Analisadas:</h5>
+            <table>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Dimensões</th>
+                    <th>Canais</th>
+                    <th>Tipo de Dados</th>
+                    <th>Profundidade de Cor</th>
+                </tr>
+                <tr>
+                    <td>peppers.jpg</td>
+                    <td>384 × 512</td>
+                    <td>3 (BGR)</td>
+                    <td>uint8</td>
+                    <td>8 bits por canal (24 bits total)</td>
+                </tr>
+                <tr>
+                    <td>messi5.jpg</td>
+                    <td>Variables</td>
+                    <td>3 (BGR)</td>
+                    <td>uint8</td>
+                    <td>8 bits por canal (24 bits total)</td>
+                </tr>
+                <tr>
+                    <td>cameraman.jpg</td>
+                    <td>256 × 256</td>
+                    <td>1 (Grayscale)</td>
+                    <td>uint8</td>
+                    <td>8 bits por pixel (256 níveis de cinza)</td>
+                </tr>
+            </table>
 
             <h4>Representação de Pixels e Profundidade de Cor</h4>
-            <div class="analysis-section">
-                <h5>Análise da Representação Digital:</h5>
-                <p><strong>Para imagens coloridas (BGR):</strong></p>
-                <ul>
-                    <li>Cada pixel é representado por três valores (Blue, Green, Red)</li>
-                    <li>Cada canal possui 8 bits = 256 níveis possíveis (0-255)</li>
-                    <li>Total de cores possíveis: 256³ = 16.777.216 cores</li>
-                    <li>Espaço de armazenamento: 3 bytes por pixel</li>
-                </ul>
-                
-                <p><strong>Para imagens em tons de cinza:</strong></p>
-                <ul>
-                    <li>Cada pixel é representado por um único valor de intensidade</li>
-                    <li>8 bits = 256 níveis de cinza (0 = preto, 255 = branco)</li>
-                    <li>Espaço de armazenamento: 1 byte por pixel</li>
-                </ul>
-            </div>
+            <p><strong>Para imagens coloridas (BGR):</strong></p>
+            <ul>
+                <li>Cada pixel é representado por três valores (Blue, Green, Red)</li>
+                <li>Cada canal possui 8 bits = 256 níveis possíveis (0-255)</li>
+                <li>Total de cores possíveis: 256³ = 16.777.216 cores</li>
+                <li>Espaço de armazenamento: 3 bytes por pixel</li>
+            </ul>
+            
+            <p><strong>Para imagens em tons de cinza:</strong></p>
+            <ul>
+                <li>Cada pixel é representado por um único valor de intensidade</li>
+                <li>8 bits = 256 níveis de cinza (0 = preto, 255 = branco)</li>
+                <li>Espaço de armazenamento: 1 byte por pixel</li>
+            </ul>
         </section>
 
         <section id="discussao">
